@@ -1,0 +1,6 @@
+cluster,cluster_name,listings,area_median,bedrooms_median,bathrooms_median,rent_median,rent_q25,rent_q75,share_percent
+0,Two-bedroom profiles,8006,1025.0,2.0,2.0,65000.0,50000.0,85000.0,42.48116311153561
+1,Three-bedroom profiles,4870,1575.0,3.0,3.0,130000.0,88000.0,180000.0,25.84102727369203
+2,"Compact, one-bath profiles",2272,565.0,1.0,1.0,31000.0,20000.0,45000.0,12.0556086172132
+3,"Large, multi-room profiles",1685,2750.0,4.0,4.0,300000.0,200000.0,450000.0,8.94088931338215
+4,"Compact, two-bath profiles",2013,650.0,1.0,2.0,38000.0,30000.0,48000.0,10.681311684177013

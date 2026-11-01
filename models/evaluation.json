@@ -1,0 +1,375 @@
+{
+  "rows": 18846,
+  "features": [
+    "Area_num",
+    "BHK_num",
+    "Bathrooms_num"
+  ],
+  "chosen_k": 5,
+  "comparison": [
+    {
+      "k": 2,
+      "inertia_full": 21822.3758693617,
+      "silhouette_sample": 0.5698074806250918,
+      "reference_kmeans_silhouette": 0.5705743333826394,
+      "reference_ward_silhouette": 0.5662830993650744,
+      "methods_ari": 0.9404684497736121,
+      "smallest_cluster_share": 0.3546110580494535
+    },
+    {
+      "k": 3,
+      "inertia_full": 13521.760905930349,
+      "silhouette_sample": 0.5497498256132274,
+      "reference_kmeans_silhouette": 0.5507767582136132,
+      "reference_ward_silhouette": 0.5395627571605379,
+      "methods_ari": 0.8542337997064621,
+      "smallest_cluster_share": 0.22540592168099333
+    },
+    {
+      "k": 4,
+      "inertia_full": 8321.496504745108,
+      "silhouette_sample": 0.5718932442523518,
+      "reference_kmeans_silhouette": 0.5730752953232492,
+      "reference_ward_silhouette": 0.5626940332548026,
+      "methods_ari": 0.8834749657678018,
+      "smallest_cluster_share": 0.08951501644911387
+    },
+    {
+      "k": 5,
+      "inertia_full": 6962.908980584956,
+      "silhouette_sample": 0.5792832075113192,
+      "reference_kmeans_silhouette": 0.5817217246340777,
+      "reference_ward_silhouette": 0.573165655223993,
+      "methods_ari": 0.8839211748987167,
+      "smallest_cluster_share": 0.0894088931338215
+    },
+    {
+      "k": 6,
+      "inertia_full": 6033.544257624326,
+      "silhouette_sample": 0.5691546502695989,
+      "reference_kmeans_silhouette": 0.5688155490002083,
+      "reference_ward_silhouette": 0.5492197372356518,
+      "methods_ari": 0.8945068804154876,
+      "smallest_cluster_share": 0.03204924121829566
+    },
+    {
+      "k": 7,
+      "inertia_full": 5266.970808899096,
+      "silhouette_sample": 0.5687421978202674,
+      "reference_kmeans_silhouette": 0.5733978167839918,
+      "reference_ward_silhouette": 0.5651534962484276,
+      "methods_ari": 0.9209462435958776,
+      "smallest_cluster_share": 0.02780430860660087
+    },
+    {
+      "k": 8,
+      "inertia_full": 4651.472631136285,
+      "silhouette_sample": 0.5074259602193589,
+      "reference_kmeans_silhouette": 0.5097180386235897,
+      "reference_ward_silhouette": 0.5126990738894067,
+      "methods_ari": 0.8377930649846227,
+      "smallest_cluster_share": 0.037886023559375995
+    }
+  ],
+  "stability": [
+    {
+      "check": "Different seed",
+      "seed": 7,
+      "ari_all": 0.9935960020646281,
+      "ari_excluded": null
+    },
+    {
+      "check": "80% subsample",
+      "seed": 7,
+      "ari_all": 0.9992702328718498,
+      "ari_excluded": 0.9990980521969974
+    },
+    {
+      "check": "Different seed",
+      "seed": 21,
+      "ari_all": 0.9919850775563814,
+      "ari_excluded": null
+    },
+    {
+      "check": "80% subsample",
+      "seed": 21,
+      "ari_all": 0.9926593621788689,
+      "ari_excluded": 0.9918900237873796
+    },
+    {
+      "check": "Different seed",
+      "seed": 42,
+      "ari_all": 1.0,
+      "ari_excluded": null
+    },
+    {
+      "check": "80% subsample",
+      "seed": 42,
+      "ari_all": 0.9888247202873462,
+      "ari_excluded": 0.9894447121087034
+    },
+    {
+      "check": "Different seed",
+      "seed": 84,
+      "ari_all": 0.990187552560434,
+      "ari_excluded": null
+    },
+    {
+      "check": "80% subsample",
+      "seed": 84,
+      "ari_all": 0.9888732962271283,
+      "ari_excluded": 0.9918654120971347
+    },
+    {
+      "check": "Different seed",
+      "seed": 123,
+      "ari_all": 0.9852530961982809,
+      "ari_excluded": null
+    },
+    {
+      "check": "80% subsample",
+      "seed": 123,
+      "ari_all": 0.9854333252680949,
+      "ari_excluded": 0.9775041791791085
+    }
+  ],
+  "stability_summary": {
+    "80% subsample": {
+      "mean": 0.9910121873666575,
+      "std": 0.0047200014888221535,
+      "min": 0.9854333252680949,
+      "max": 0.9992702328718498
+    },
+    "Different seed": {
+      "mean": 0.9922043456759448,
+      "std": 0.004798840195798869,
+      "min": 0.9852530961982809,
+      "max": 1.0
+    }
+  },
+  "unique_profiles": 2478,
+  "unique_weight_ari": 0.8414894188661575,
+  "profiles": [
+    {
+      "cluster": 0,
+      "cluster_name": "Two-bedroom profiles",
+      "listings": 8006,
+      "area_median": 1025.0,
+      "bedrooms_median": 2.0,
+      "bathrooms_median": 2.0,
+      "rent_median": 65000.0,
+      "rent_q25": 50000.0,
+      "rent_q75": 85000.0,
+      "share_percent": 42.48116311153561
+    },
+    {
+      "cluster": 1,
+      "cluster_name": "Three-bedroom profiles",
+      "listings": 4870,
+      "area_median": 1575.0,
+      "bedrooms_median": 3.0,
+      "bathrooms_median": 3.0,
+      "rent_median": 130000.0,
+      "rent_q25": 88000.0,
+      "rent_q75": 180000.0,
+      "share_percent": 25.84102727369203
+    },
+    {
+      "cluster": 2,
+      "cluster_name": "Compact, one-bath profiles",
+      "listings": 2272,
+      "area_median": 565.0,
+      "bedrooms_median": 1.0,
+      "bathrooms_median": 1.0,
+      "rent_median": 31000.0,
+      "rent_q25": 20000.0,
+      "rent_q75": 45000.0,
+      "share_percent": 12.0556086172132
+    },
+    {
+      "cluster": 3,
+      "cluster_name": "Large, multi-room profiles",
+      "listings": 1685,
+      "area_median": 2750.0,
+      "bedrooms_median": 4.0,
+      "bathrooms_median": 4.0,
+      "rent_median": 300000.0,
+      "rent_q25": 200000.0,
+      "rent_q75": 450000.0,
+      "share_percent": 8.94088931338215
+    },
+    {
+      "cluster": 4,
+      "cluster_name": "Compact, two-bath profiles",
+      "listings": 2013,
+      "area_median": 650.0,
+      "bedrooms_median": 1.0,
+      "bathrooms_median": 2.0,
+      "rent_median": 38000.0,
+      "rent_q25": 30000.0,
+      "rent_q75": 48000.0,
+      "share_percent": 10.681311684177013
+    }
+  ],
+  "cross_tabs": {
+    "Furnished_clean": {
+      "Compact, one-bath profiles": {
+        "Furnished": 0.27684859154929575,
+        "Missing": 0.00044014084507042255,
+        "Semi-Furnished": 0.33758802816901406,
+        "Unfurnished": 0.3851232394366197
+      },
+      "Compact, two-bath profiles": {
+        "Furnished": 0.2598112270243418,
+        "Missing": 0.0014903129657228018,
+        "Semi-Furnished": 0.3770491803278688,
+        "Unfurnished": 0.36164927968206656
+      },
+      "Large, multi-room profiles": {
+        "Furnished": 0.2807121661721068,
+        "Missing": 0.0,
+        "Semi-Furnished": 0.5554896142433234,
+        "Unfurnished": 0.16379821958456972
+      },
+      "Three-bedroom profiles": {
+        "Furnished": 0.253388090349076,
+        "Missing": 0.0006160164271047228,
+        "Semi-Furnished": 0.5012320328542095,
+        "Unfurnished": 0.24476386036960984
+      },
+      "Two-bedroom profiles": {
+        "Furnished": 0.25843117661753684,
+        "Missing": 0.0007494379215588309,
+        "Semi-Furnished": 0.41881089183112663,
+        "Unfurnished": 0.3220084936297777
+      }
+    },
+    "Property Type": {
+      "Compact, one-bath profiles": {
+        "Apartment": 0.8943661971830986,
+        "Builder Floor Apartment": 0.030809859154929578,
+        "Penthouse": 0.0,
+        "Residential House": 0.0721830985915493,
+        "Service Apartment": 0.0008802816901408451,
+        "Villa": 0.0017605633802816902
+      },
+      "Compact, two-bath profiles": {
+        "Apartment": 0.9726775956284153,
+        "Builder Floor Apartment": 0.0014903129657228018,
+        "Penthouse": 0.0,
+        "Residential House": 0.025832091405861898,
+        "Service Apartment": 0.0,
+        "Villa": 0.0
+      },
+      "Large, multi-room profiles": {
+        "Apartment": 0.9703264094955489,
+        "Builder Floor Apartment": 0.0005934718100890207,
+        "Penthouse": 0.007121661721068249,
+        "Residential House": 0.007121661721068249,
+        "Service Apartment": 0.0,
+        "Villa": 0.01483679525222552
+      },
+      "Three-bedroom profiles": {
+        "Apartment": 0.9852156057494866,
+        "Builder Floor Apartment": 0.0008213552361396304,
+        "Penthouse": 0.0012320328542094457,
+        "Residential House": 0.00944558521560575,
+        "Service Apartment": 0.0,
+        "Villa": 0.0032854209445585215
+      },
+      "Two-bedroom profiles": {
+        "Apartment": 0.9822633025231077,
+        "Builder Floor Apartment": 0.0034973769672745443,
+        "Penthouse": 0.0,
+        "Residential House": 0.013240069947539346,
+        "Service Apartment": 0.0,
+        "Villa": 0.0009992505620784412
+      }
+    },
+    "Facing": {
+      "Compact, one-bath profiles": {
+        "East": 0.4005281690140845,
+        "North": 0.0743838028169014,
+        "North - East": 0.09330985915492958,
+        "North - West": 0.013204225352112676,
+        "South": 0.011443661971830986,
+        "South - East": 0.014084507042253521,
+        "South -West": 0.025088028169014086,
+        "Unknown": 0.2777288732394366,
+        "West": 0.09022887323943662
+      },
+      "Compact, two-bath profiles": {
+        "East": 0.5807252856433184,
+        "North": 0.06557377049180328,
+        "North - East": 0.12071535022354694,
+        "North - West": 0.017386984600099353,
+        "South": 0.011922503725782414,
+        "South - East": 0.005961251862891207,
+        "South -West": 0.017386984600099353,
+        "Unknown": 0.1122702434177844,
+        "West": 0.06805762543467461
+      },
+      "Large, multi-room profiles": {
+        "East": 0.3893175074183976,
+        "North": 0.05934718100890208,
+        "North - East": 0.16735905044510385,
+        "North - West": 0.02433234421364985,
+        "South": 0.013649851632047478,
+        "South - East": 0.04451038575667656,
+        "South -West": 0.10029673590504451,
+        "Unknown": 0.08189910979228486,
+        "West": 0.11928783382789318
+      },
+      "Three-bedroom profiles": {
+        "East": 0.484394250513347,
+        "North": 0.0731006160164271,
+        "North - East": 0.16427104722792607,
+        "North - West": 0.022792607802874742,
+        "South": 0.01108829568788501,
+        "South - East": 0.014373716632443531,
+        "South -West": 0.04188911704312115,
+        "Unknown": 0.07268993839835729,
+        "West": 0.11540041067761807
+      },
+      "Two-bedroom profiles": {
+        "East": 0.5374718960779415,
+        "North": 0.06982263302523108,
+        "North - East": 0.14201848613539844,
+        "North - West": 0.020484636522608044,
+        "South": 0.011241568823382463,
+        "South - East": 0.00824381713714714,
+        "South -West": 0.02785410941793655,
+        "Unknown": 0.0898076442667999,
+        "West": 0.09305520859355483
+      }
+    }
+  },
+  "pca_variance": [
+    0.9018744401171264,
+    0.06119547494196121,
+    0.036930084940912426
+  ],
+  "tsne_kl": 0.16208511590957642,
+  "manual_cluster": 0,
+  "manual_name": "Two-bedroom profiles",
+  "model_sha256": "4bf93aaa563afbef19d59aeb86bc0fca5e2b212d03d2bdfff542ca11a46deb1b",
+  "dataset_sha256": "329f9a93a47d42fec277642cc229d2ba2810498b52699763e529ffb287c88a74",
+  "source_sha256": "354d28e07432137cdc97a2197a556269137e74135af01186420e2e2917a19ee9",
+  "tsne_parameters": {
+    "angle": 0.5,
+    "early_exaggeration": 12.0,
+    "init": "pca",
+    "learning_rate": "auto",
+    "max_iter": 1000,
+    "method": "barnes_hut",
+    "metric": "euclidean",
+    "metric_params": null,
+    "min_grad_norm": 1e-07,
+    "n_components": 2,
+    "n_iter_without_progress": 300,
+    "n_jobs": 2,
+    "perplexity": 40,
+    "random_state": 42,
+    "verbose": 0
+  }
+}
