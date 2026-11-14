@@ -10,7 +10,7 @@ tags:
 ---
 # Mumbai rental physical profiles - enriched dataset
 
-Local dataset card, awaiting group review; no remote dataset has been published. Authors: Ahmed Belahcen, Nandini Rathod, Sanjana Kiran and Akanksha Dhumal, Group 3, AI Methods I, IAAC MaAI 2026/27.
+Authors: Ahmed Belahcen, Nandini Rathod, Sanjana Kiran and Akanksha Dhumal, Group 3, AI Methods I, IAAC MaAI 2026/27.
 
 ## Source, license and changes
 
@@ -87,3 +87,9 @@ The related local model and its working inference example are in ../models/. The
 
 Enriched CSV SHA256: `329f9a93a47d42fec277642cc229d2ba2810498b52699763e529ffb287c88a74`.
 Source SHA256: `354d28e07432137cdc97a2197a556269137e74135af01186420e2e2917a19ee9`.
+
+
+## Related resources
+
+- Model: https://huggingface.co/iaac-maai/day3-group3-mumbai-rental-profiles
+- GitHub: https://github.com/iaac-maai/group-3-day3-assignment
