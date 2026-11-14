@@ -9,14 +9,27 @@ tags:
 ---
 # Mumbai physical rental profiles - K-Means
 
-Local model card; this artifact has not been uploaded. Developed by Ahmed Belahcen, Nandini Rathod, Sanjana Kiran and Akanksha Dhumal, Group 3, AI Methods I, IAAC MaAI 2026/27. See the existing MIT LICENSE for code/model terms; source data retains CC BY 4.0 attribution.
+Developed by Ahmed Belahcen, Nandini Rathod, Sanjana Kiran and Akanksha Dhumal, Group 3, AI Methods I, IAAC MaAI 2026/27. See the existing MIT LICENSE for code/model terms; source data retains CC BY 4.0 attribution.
+
+- **GitHub:** https://github.com/iaac-maai/group-3-day3-assignment
+- **Dataset:** https://huggingface.co/datasets/iaac-maai/group3-day3-mumbai-rental-profiles
+
+## Model at a glance
+
+![Cluster sizes and advertised rent](../figures/08_cluster_profiles_and_rent.png)
+
+Groups are defined by area, bedrooms and bathrooms. Rent is shown afterwards for interpretation; the points mark median rent and the segments mark the interquartile range.
+
+![PCA and t-SNE](../figures/10_pca_and_tsne_clusters.png)
+
+Both maps show the same K-Means assignments. Map coordinates are for visualisation only; apparent t-SNE gaps do not establish separate housing categories.
 
 ## Model and training
 
 The full pipeline median-imputes numeric inputs, applies ln(1 + area), standardizes the three features and fits K-Means (k=5, n_init=20, random_state=42). Only Area_num, BHK_num and Bathrooms_num form clusters. Rent, furnishing, facing and property type describe results afterwards. Balconies are excluded because more than half are missing. All 18,846 listings are retained; 15 missing bathroom values are imputed to 2 inside the fitted pipeline.
 
 PCA is fitted on the prepared three-feature space for visualization; its first two axes retain 96.3069915% of variance. t-SNE uses all rows, perplexity=40, init=pca, learning_rate=auto, max_iter=1000, random_state=42, Barnes-Hut, angle=0.5 and two output dimensions. Neither embedding forms the K-Means inputs. The fitted clustering pipeline can predict new inputs; the exported t-SNE map cannot transform new listings.
-The pipeline is fitted on the full cleaned snapshot. No supervised target, test split or accuracy is defined. See evaluation below for subsampling checks. Runtime: Python 3.12.14, scikit-learn 1.9.1, NumPy 2.5.4, pandas 3.1.0, SciPy 1.18.1, joblib 1.6.0; see ../requirements.txt for the complete analysis environment.
+The pipeline is fitted on the full cleaned snapshot. No supervised target, test split or accuracy is defined. See evaluation below for subsampling checks. Runtime: Python 3.12.14, scikit-learn 1.9.1, NumPy 2.5.4, pandas 3.1.0, SciPy 1.18.1, joblib 1.6.0; see requirements.txt for the complete analysis environment.
 
 ## Inputs and outputs
 
@@ -44,26 +57,30 @@ K-Means k=2,...,8 is fitted on the full dataset. Silhouette is evaluated on the 
 
 A separate fair comparison refits preprocessing and both K-Means and Ward hierarchical clustering on that same 3,000-row reference subset. At k=5 their silhouettes are 0.5817217246340777 and 0.573165655223993; agreement ARI is 0.8839211748987167. The notebook includes the Ward dendrogram.
 
-Five seeds (7, 21, 42, 84, 123) give mean full-data assignment ARI 0.9922043456759448 (population SD 0.004798840195798869). Five 80% subsample refits, including preprocessing refitted on each subset, give mean ARI on all listings 0.9910121873666575 (SD 0.0047200014888221535). Scores for excluded rows are also recorded. Equal weighting of 2,478 distinct raw physical tuples gives ARI 0.8414894188661575 against the reference assignments, demonstrating sensitivity to repeated profiles. ARI is agreement, not predictive accuracy. These are exploratory internal checks, not a supervised train/test evaluation. Exact records are in models/evaluation.json.
+Five seeds (7, 21, 42, 84, 123) give mean full-data assignment ARI 0.9922043456759448 (population SD 0.004798840195798869). Five 80% subsample refits, including preprocessing refitted on each subset, give mean ARI on all listings 0.9910121873666575 (SD 0.0047200014888221535). Scores for excluded rows are also recorded. Equal weighting of 2,478 distinct raw physical tuples gives ARI 0.8414894188661575 against the reference assignments, demonstrating sensitivity to repeated profiles. ARI is agreement, not predictive accuracy. These are exploratory internal checks, not a supervised train/test evaluation. Exact records are in evaluation.json.
 
 ## Use and artifact security
 
-From the project root, in the pinned environment:
+Install the packages in `requirements.txt`. Download files from a trusted revision of this repository:
 
 ```python
-import json
+import json, joblib, pandas as pd
+from urllib.request import urlretrieve
 from pathlib import Path
-import joblib
-import pandas as pd
 
-# Only load this trusted local artifact; see predict_example.py for a hash check.
-model = joblib.load("models/model.joblib")
-names = json.loads(Path("models/cluster_names.json").read_text())
+repo = "https://huggingface.co/iaac-maai/day3-group3-mumbai-rental-profiles/resolve/main/"
+folder = Path("downloaded_model")
+folder.mkdir(exist_ok=True)
+for name in ("model.joblib", "cluster_names.json"):
+    urlretrieve(repo + name, folder / name)
+model = joblib.load(folder / "model.joblib")
+names = json.loads((folder / "cluster_names.json").read_text())
 example = pd.DataFrame({"Area_num": [750.0], "BHK_num": [2.0], "Bathrooms_num": [2.0]})
 label = int(model.predict(example)[0])
-print(label, names[str(label)])
-# 0 Two-bedroom profiles
+print(label, names[str(label)])  # 0 Two-bedroom profiles
 ```
+
+For reproducible use, replace `main` in the URL with the repository commit SHA.
 
 Joblib/pickle deserialization can execute code. Load only trusted artifacts in compatible environments. A checksum detects changed bytes but does not establish authorship. The notebook writes its own artifact and reloads it; the standalone example verifies the model SHA256 below. Predictions from the reloaded pipeline reproduce every exported label.
 
@@ -75,6 +92,6 @@ Listings are not verified unique dwellings. Repeated characteristics influence w
 
 ## Training data and attribution
 
-Source: [cleaned Day 2 snapshot](https://github.com/iaac-maai/group-3-day2-assignment/blob/6b2a6d17af8c4d8950f12e60dc97f8b9a8d4dbc1/data/mumbai_cleaned.csv), derived from Harshal Honde's [Property Rental Listings Dataset](https://www.kaggle.com/datasets/harshalhonde/property-rental-listings-dataset). The dataset is attributed under the source's declared CC BY 4.0 license; the existing project code/model license is MIT (see ../LICENSE). MIT does not replace the source data's attribution/license. Original collection date and listing verification are unavailable.
+Source: [cleaned Day 2 snapshot](https://github.com/iaac-maai/group-3-day2-assignment/blob/6b2a6d17af8c4d8950f12e60dc97f8b9a8d4dbc1/data/mumbai_cleaned.csv), derived from Harshal Honde's [Property Rental Listings Dataset](https://www.kaggle.com/datasets/harshalhonde/property-rental-listings-dataset). The dataset is attributed under the source's declared CC BY 4.0 license; the existing project code/model license is MIT (see LICENSE). MIT does not replace the source data's attribution/license. Original collection date and listing verification are unavailable.
 
 Source snapshot SHA256: `354d28e07432137cdc97a2197a556269137e74135af01186420e2e2917a19ee9`.
