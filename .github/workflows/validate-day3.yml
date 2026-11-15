@@ -1,0 +1,61 @@
+name: Validate Day 3 notebook
+on:
+  push:
+    branches: [main, fix/day3-cleanup]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  notebook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install from UTF-8 requirements in a fresh environment
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install nbclient==0.10.2 nbformat==5.10.4 ipykernel==6.29.5
+          python -m pip check
+      - name: Execute every cell in a fresh Jupyter kernel
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import nbformat
+          from nbclient import NotebookClient
+          p = Path('notebook/unsupervised_learning.ipynb')
+          nb = nbformat.read(p, as_version=4)
+          for cell in nb.cells:
+              if cell.cell_type == 'code':
+                  cell.outputs = []
+                  cell.execution_count = None
+          NotebookClient(nb, timeout=1200, kernel_name='python3', resources={'metadata': {'path': str(p.parent.resolve())}}).execute()
+          nbformat.write(nb, p)
+          cells = [c for c in nb.cells if c.cell_type == 'code']
+          assert [c.execution_count for c in cells] == list(range(1, len(cells) + 1))
+          assert len(list(Path('figures').glob('*.png'))) >= 4
+          assert Path('figures/08_cluster_profiles_and_rent.png').is_file()
+          assert Path('figures/10_pca_and_tsne_clusters.png').is_file()
+          table = __import__('pandas').read_csv('dataset/mumbai_rental_profiles.csv')
+          assert table.shape == (18846, 22)
+          assert table.cluster.value_counts().sort_index().tolist() == [8006, 4870, 2272, 1685, 2013]
+          import pandas as pd
+          assert len(pd.read_csv('data/mumbai_cleaned.csv')) == 18846
+          print(f'PASS: {len(cells)} cells, exported CSV and figures.')
+          PY
+      - name: Verify the published model in a fresh folder
+        run: python models/verify_published.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: day3-executed
+          path: |
+            notebook/unsupervised_learning.ipynb
+            dataset/mumbai_rental_profiles.csv
+            dataset/cluster_profiles.csv
+            models/model.joblib
+            models/cluster_names.json
+            figures/*.png
+            figures/*.svg

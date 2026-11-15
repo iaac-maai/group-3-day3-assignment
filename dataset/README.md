@@ -7,18 +7,31 @@ tags:
   - clustering
   - housing
   - tabular
+  - iaac-maai
+  - ai-methods-1
+configs:
+  - config_name: default
+    data_files:
+      - split: train
+        path: mumbai_rental_profiles.csv
 ---
 # Mumbai rental physical profiles - enriched dataset
 
-Authors: Ahmed Belahcen, Nandini Rathod, Sanjana Kiran and Akanksha Dhumal, Group 3, AI Methods I, IAAC MaAI 2026/27.
+
+Dataset derived from the Group 3 Day 3 analysis. Authors: Ahmed Belahcen, Nandini Rathod, Sanjana Kiran and Akanksha Dhumal, Group 3, AI Methods I, IAAC MaAI 2026/27.
+
 
 ## Source, license and changes
 
-Source: [cleaned Day 2 snapshot](https://github.com/iaac-maai/group-3-day2-assignment/blob/6b2a6d17af8c4d8950f12e60dc97f8b9a8d4dbc1/data/mumbai_cleaned.csv), derived from Harshal Honde's [Property Rental Listings Dataset](https://www.kaggle.com/datasets/harshalhonde/property-rental-listings-dataset). The dataset is attributed under the source's declared CC BY 4.0 license; the existing project code/model license is MIT (see ../LICENSE). MIT does not replace the source data's attribution/license. Original collection date and listing verification are unavailable.
+
+Source: [cleaned Day 2 snapshot](https://github.com/iaac-maai/group-3-day2-assignment/blob/6b2a6d17af8c4d8950f12e60dc97f8b9a8d4dbc1/data/mumbai_cleaned.csv), derived from Harshal Honde's [Property Rental Listings Dataset](https://www.kaggle.com/datasets/harshalhonde/property-rental-listings-dataset). The dataset is attributed under the source's declared CC BY 4.0 license; the existing project code/model license is MIT (see https://github.com/iaac-maai/group-3-day3-assignment/blob/main/LICENSE). MIT does not replace the source data's attribution/license. Original collection date and listing verification are unavailable.
+
 
 This derivative retains all 18,846 rows, adds preprocessing fields, five named cluster assignments and PCA/t-SNE coordinates, and selects 22 columns. Original missing values remain visible; imputation is in separate engineered fields. Titles, descriptions and image links are omitted. No rows are claimed to be unique dwellings and no personal-identity audit of the original source is implied. There is one full exploratory table, not supervised train/test splits. Collection date is unknown.
 
+
 ## Schema
+
 
 | Column | CSV read dtype | Meaning |
 |---|---|---|
@@ -45,11 +58,19 @@ This derivative retains all 18,846 rows, adds preprocessing fields, five named c
 | tsne_x | float64 | First t-SNE coordinate; arbitrary units. |
 | tsne_y | float64 | Second t-SNE coordinate; arbitrary units. |
 
+
 ## How labels and maps were made
+
 
 The full pipeline median-imputes numeric inputs, applies ln(1 + area), standardizes the three features and fits K-Means (k=5, n_init=20, random_state=42). Only Area_num, BHK_num and Bathrooms_num form clusters. Rent, furnishing, facing and property type describe results afterwards. Balconies are excluded because more than half are missing. All 18,846 listings are retained; 15 missing bathroom values are imputed to 2 inside the fitted pipeline.
 
+
 PCA is fitted on the prepared three-feature space for visualization; its first two axes retain 96.3069915% of variance. t-SNE uses all rows, perplexity=40, init=pca, learning_rate=auto, max_iter=1000, random_state=42, Barnes-Hut, angle=0.5 and two output dimensions. Neither embedding forms the K-Means inputs. The fitted clustering pipeline can predict new inputs; the exported t-SNE map cannot transform new listings.
+
+
+## The clusters
+
+Names describe typical physical characteristics, not strict boundaries or ranked housing quality. Rent is an interpretation variable, not a clustering input.
 
 | ID | Typical profile | Listings | Median area | Median bedrooms / baths | Median rent INR/month |
 |---|---|---:|---:|---:|---:|
@@ -59,37 +80,69 @@ PCA is fitted on the prepared three-feature space for visualization; its first t
 | 3 | Large, multi-room profiles | 1,685 | 2,750 | 4 / 4 | 300,000 |
 | 4 | Compact, two-bath profiles | 2,013 | 650 | 1 / 2 | 38,000 |
 
+
 ## Quality and limitations
+
 
 K-Means k=2,...,8 is fitted on the full dataset. Silhouette is evaluated on the same fixed 3,000-row random sample (seed 42): k=5 scores 0.5792832075113192 versus k=4 at 0.5718932442523518. Full-data inertia at k=5 is 6962.908980584956. The elbow is around four to five; five is a working interpretation, not a verified ground truth.
 
+
 A separate fair comparison refits preprocessing and both K-Means and Ward hierarchical clustering on that same 3,000-row reference subset. At k=5 their silhouettes are 0.5817217246340777 and 0.573165655223993; agreement ARI is 0.8839211748987167. The notebook includes the Ward dendrogram.
 
-Five seeds (7, 21, 42, 84, 123) give mean full-data assignment ARI 0.9922043456759448 (population SD 0.004798840195798869). Five 80% subsample refits, including preprocessing refitted on each subset, give mean ARI on all listings 0.9910121873666575 (SD 0.0047200014888221535). Scores for excluded rows are also recorded. Equal weighting of 2,478 distinct raw physical tuples gives ARI 0.8414894188661575 against the reference assignments, demonstrating sensitivity to repeated profiles. ARI is agreement, not predictive accuracy. These are exploratory internal checks, not a supervised train/test evaluation. Exact records are in models/evaluation.json.
+
+Five seeds (7, 21, 42, 84, 123) give mean full-data assignment ARI 0.9922043456759448 (population SD 0.004798840195798869). Five 80% subsample refits, including preprocessing refitted on each subset, give mean ARI on all listings 0.9910121873666575 (SD 0.0047200014888221535). Scores for excluded rows are also recorded. Equal weighting of 2,478 distinct raw physical tuples gives ARI 0.8414894188661575 against the reference assignments, demonstrating sensitivity to repeated profiles. ARI is agreement, not predictive accuracy. These are exploratory internal checks, not a supervised train/test evaluation. Exact records are in the evaluation.json in the GitHub models folder.
+
 
 Listings are not verified unique dwellings. Repeated characteristics influence weighting, and cluster names describe medians rather than strict membership rules. The source reports area in square feet, but row-level unit consistency is unverified. Rent is advertised monthly INR, not a transaction price. Collection date is unknown. Location is only Mumbai, not a neighborhood. Bedrooms and bathrooms have equal standardized-feature weighting to log-area, which is a modeling choice. No demographic or causal conclusions are supported. Use for classroom descriptive exploration; do not use for tenant selection, credit, automated valuation or claims about today's market.
 
+
 ## Load and explore
+
 
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
-df = pd.read_csv("dataset/mumbai_rental_profiles.csv")
+df = pd.read_csv("https://huggingface.co/datasets/iaac-maai/group3-day3-mumbai-rental-profiles/resolve/main/mumbai_rental_profiles.csv")
 for name, group in df.groupby("cluster_name"):
     plt.scatter(group.pca_x, group.pca_y, s=3, alpha=.3, label=name)
 plt.xlabel("PC1"); plt.ylabel("PC2")
 plt.legend(); plt.show()
 ```
 
-The related local model and its working inference example are in ../models/. The complete notebook, numerical evaluation and reproducibility instructions are in the parent project. Remote download examples can be added after the group approves publication and actual repository URLs exist.
+
+The fitted model and working inference example are published on [Hugging Face](https://huggingface.co/iaac-maai/day3-group3-mumbai-rental-profiles). Numerical evaluation and the full notebook are available in the GitHub repository.
+
 
 ![PCA and t-SNE by physical profile](cluster_map.png)
+
 
 Enriched CSV SHA256: `329f9a93a47d42fec277642cc229d2ba2810498b52699763e529ffb287c88a74`.
 Source SHA256: `354d28e07432137cdc97a2197a556269137e74135af01186420e2e2917a19ee9`.
 
 
-## Related resources
 
-- Model: https://huggingface.co/iaac-maai/day3-group3-mumbai-rental-profiles
-- GitHub: https://github.com/iaac-maai/group-3-day3-assignment
+
+## Code and reproducibility
+
+
+[Group 3 GitHub repository](https://github.com/iaac-maai/group-3-day3-assignment), notebook `notebook/unsupervised_learning.ipynb`.
+
+
+![Typical profiles and held-aside rents](cluster_profiles.png)
+
+
+
+
+## Published model
+
+
+The trained K-Means pipeline, model card and usage example are available on [Hugging Face](https://huggingface.co/iaac-maai/day3-group3-mumbai-rental-profiles). It assigns physical-profile clusters from area, bedrooms and bathrooms; it does not predict rent.
+
+## Reading the figures
+
+The cluster map shows the same five assignments in PCA and t-SNE. PCA preserves 96.31% of prepared-feature variance in two axes; t-SNE highlights local neighborhoods, but island spacing and size do not measure real housing-market separation. The profile chart shows that the two-bedroom group is the largest (8,006 listings), while the large multi-room group has the highest median advertised rent (INR 300,000/month). Rent differences describe association, not a causal effect of cluster membership.
+
+## Related
+
+- [GitHub repository and notebook](https://github.com/iaac-maai/group-3-day3-assignment)
+- [Published clustering model and model card](https://huggingface.co/iaac-maai/day3-group3-mumbai-rental-profiles)
